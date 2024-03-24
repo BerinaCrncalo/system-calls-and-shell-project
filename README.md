@@ -23,11 +23,11 @@ else { //parent
 }
 
 Answer 1.5.3: 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
-
 int main() {
     char *command = "ls"; // Example command
     int rc = fork();
