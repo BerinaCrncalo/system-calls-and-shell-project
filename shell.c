@@ -6,12 +6,17 @@
 #include <sys/wait.h>
 #include <ctype.h>
 #include <fcntl.h> 
+#include <sys/statvfs.h>
 
 #define MAX_LINE_LENGTH 2048
 #define MAX_ARGS 128
 
 void execute_command(char *args[]);
-void print_shell_prompt(char *shell_name, char *prompt_color, char *reset_color);
+void print_shell_prompt(char*prompt_type,char *prompt_color, char *reset_color);
+void wc(char *filename);
+void grep(char *pattern, char *filename);
+void df();
+void cmatrix();
 
 int main(int argc, char *argv[]) {
     char line[MAX_LINE_LENGTH];
@@ -27,7 +32,8 @@ int main(int argc, char *argv[]) {
     }
 
     while (1) {
-        print_shell_prompt(shell_name, prompt_color, reset_color);
+        print_shell_prompt("machinename", prompt_color, reset_color); //For machinename@uername:~$
+        // print_shell_prompt("prompt", prompt_color, reset_color); //For prompt$
         if (fgets(line, MAX_LINE_LENGTH, stdin) == NULL) {
             break;
         }
@@ -56,8 +62,15 @@ int main(int argc, char *argv[]) {
         }
         args[i] = NULL; // Terminate argument list
 
-        execute_command(args);
-        wait(&status);
+         // Check if the command is wc or grep
+        if (strcmp(args[0], "wc") == 0) {
+            wc(args[1]); // Pass filename as argument
+        } else if (strcmp(args[0], "grep") == 0) {
+            grep(args[1], args[2]); // Pass pattern and filename as arguments
+        } else {
+            execute_command(args);
+            wait(&status);
+        }
     }
     return 0;
 }
@@ -122,8 +135,98 @@ void execute_command(char *args[]) {
     }
 }
 
-// Print the shell prompt with specified color and shell name
-void print_shell_prompt(char *shell_name, char *prompt_color, char *reset_color) {
-    printf("%s%s$ %s", prompt_color, shell_name, reset_color);
-    fflush(stdout); // Flush the output buffer to ensure prompt is displayed immediately
+void print_shell_prompt(char *prompt_type, char *prompt_color, char *reset_color) {
+    if (strcmp(prompt_type, "machinename") == 0) {
+        char machinename[128];
+        char *username = getlogin();
+        
+        if (gethostname(machinename, sizeof(machinename)) == -1) {
+            perror("gethostname");
+            return;
+        }
+        
+        printf("%s%s@%s:%s$ %s", prompt_color, machinename, username, "~", reset_color);
+    } else if (strcmp(prompt_type, "prompt") == 0) {
+        printf("%s%s$ %s", prompt_color, "prompt", reset_color);
+    } else {
+        fprintf(stderr, "Invalid prompt type\n");
+        return;
+    }
+    fflush(stdout);
+}
+void wc(char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    int lines = 0, words = 0, characters = 0;
+    int c;
+    int in_word = 0;
+
+    while ((c = fgetc(file)) != EOF) {
+        characters++;
+        if (c == '\n') {
+            lines++;
+        }
+        if (isspace(c)) {
+            in_word = 0;
+        } else if (!in_word) {
+            in_word = 1;
+            words++;
+        }
+    }
+
+    fclose(file);
+    printf(" %d %d %d %s\n", lines, words, characters, filename);
+}
+
+// Implementation of grep functionality
+void grep(char *pattern, char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[MAX_LINE_LENGTH];
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (strstr(line, pattern) != NULL) {
+            printf("%s", line);
+        }
+    }
+
+    fclose(file);
+}
+
+// Implementation of df (disk free) functionality
+void df() {
+    struct statvfs buffer;
+    if (statvfs(".", &buffer) == -1) {
+        perror("Error getting file system status");
+        return;
+    }
+
+    unsigned long total_blocks = buffer.f_blocks * buffer.f_frsize;
+    unsigned long free_blocks = buffer.f_bfree * buffer.f_frsize;
+
+    printf("Filesystem     1K-blocks    Used Available Use%% Mounted on\n");
+    printf(".                 %lu     %lu     %lu    %d%% / \n", total_blocks / 1024, (total_blocks - free_blocks) / 1024, free_blocks / 1024, (int)(((total_blocks - free_blocks) * 100) / total_blocks));
+}
+
+// Implementation of cmatrix functionality
+void cmatrix() {
+    printf("\033[2J"); // Clear screen
+    printf("\033[1;1H"); // Move cursor to top-left corner
+
+    char characters[] = {'|', '/', '-', '\\'};
+    int index = 0;
+
+    while (1) {
+        printf("%c\r", characters[index]);
+        fflush(stdout);
+        usleep(100000); // Sleep for 100 milliseconds
+        index = (index + 1) % 4;
+    }
 }

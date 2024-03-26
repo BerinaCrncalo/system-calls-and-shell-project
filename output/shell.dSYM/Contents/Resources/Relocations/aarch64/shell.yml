@@ -2,8 +2,12 @@
 triple:          'arm64-apple-darwin'
 binary-path:     '/Users/berinnacrncalo/Desktop/osproject/output/shell'
 relocations:
-  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x10000385C, symSize: 0x2FC }
-  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x10000385C, symSize: 0x2FC }
-  - { offsetInCU: 0x10A, offset: 0x10A, size: 0x8, addend: 0x0, symName: _print_shell_prompt, symObjAddr: 0x2FC, symBinAddr: 0x100003B58, symSize: 0x5C }
-  - { offsetInCU: 0x14A, offset: 0x14A, size: 0x8, addend: 0x0, symName: _execute_command, symObjAddr: 0x358, symBinAddr: 0x100003BB4, symSize: 0x250 }
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003194, symSize: 0x368 }
+  - { offsetInCU: 0x55, offset: 0x55, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003194, symSize: 0x368 }
+  - { offsetInCU: 0x11E, offset: 0x11E, size: 0x8, addend: 0x0, symName: _print_shell_prompt, symObjAddr: 0x368, symBinAddr: 0x1000034FC, symSize: 0x170 }
+  - { offsetInCU: 0x18A, offset: 0x18A, size: 0x8, addend: 0x0, symName: _wc, symObjAddr: 0x4D8, symBinAddr: 0x10000366C, symSize: 0x150 }
+  - { offsetInCU: 0x202, offset: 0x202, size: 0x8, addend: 0x0, symName: _grep, symObjAddr: 0x628, symBinAddr: 0x1000037BC, symSize: 0x100 }
+  - { offsetInCU: 0x250, offset: 0x250, size: 0x8, addend: 0x0, symName: _execute_command, symObjAddr: 0x728, symBinAddr: 0x1000038BC, symSize: 0x250 }
+  - { offsetInCU: 0x2BA, offset: 0x2BA, size: 0x8, addend: 0x0, symName: _df, symObjAddr: 0x978, symBinAddr: 0x100003B0C, symSize: 0xD8 }
+  - { offsetInCU: 0x2FA, offset: 0x2FA, size: 0x8, addend: 0x0, symName: _cmatrix, symObjAddr: 0xA50, symBinAddr: 0x100003BE4, symSize: 0x9C }
 ...
