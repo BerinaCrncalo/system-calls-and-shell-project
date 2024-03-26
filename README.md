@@ -1,6 +1,11 @@
 # OperatingSystems_project
 # Berina Crnčalo & Ahmed Hasković
 
+Files uploaded:
+1. shell.c
+2. systemcalls.c
+3. README.md
+
 Question 1.5.1: If we have a single-core, uniprocessor system that supports multiprogramming, how many processes can be in a running state in such a system, at any given time?
 
 Answer 1.5.1: In a single-core, uniprocessor system with multiprogramming support, multiple processes can be loaded into memory simultaneously. However, due to the limitation of having only one CPU core, only one process can actively execute instructions at any given time. Therefore, in such a system, only one process can be in the running state at a time, but the computer can quickly switch between programs to give the appearance of them all running simultaneously.
@@ -45,3 +50,27 @@ int main() {
     return 0;
 }
 
+An outline of what we did for the assignment:
+
+- Developed a basic shell interface allowing user input and execution of external programs.
+- Implemented robust error handling to prevent crashes beyond machine failure.
+- Introduced prompt customization offering two options: basic prompt prompt$ and advanced prompt machinename@username:~$.
+- Dynamically retrieved machine name and username using gethostname() and getlogin_r() functions.
+- Implemented basic functionality for wc, grep, df, and cmatrix programs.
+- Enhanced functionality and creativity by providing options and/or arguments for at least two programs.
+- Modified the shell code to allow output redirection using the > operator.
+- Implemented functionality to redirect command output to a text file.
+- Implemented the system calls fork(), wait(), and exec() within the chosen C-programming example.
+- Demonstrated process creation and execution through these system calls.
+- Explored and implemented the forkbomb as part of the system calls exploration.
+- Provided concise and descriptive answers to questions regarding limitations of running processes in a single-core uniprocessor system.
+- Explained the necessity of system calls for shared memory IPC in multi-threaded processes.
+- Enhanced the visual appeal of the shell prompt by adding colors using ANSI escape codes.
+- Named the shell according to the assignment requirements.
+- Following these steps, the assignment requirements were met, covering basic, intermediate, and advanced functionalities of a custom shell implementation.
+
+Instructions to run files:
+gcc shell.c -o shell
+./shell
+gcc systemcalls.c -o systemcalls
+./systemcalls
