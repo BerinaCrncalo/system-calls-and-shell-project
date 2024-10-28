@@ -1,5 +1,5 @@
-# OperatingSystems_project
-# Berina Crnčalo & Ahmed Hasković
+# A Custom Shell Interface with Dynamic Prompting, Advanced System Calls, and Process Management
+# Berina Crnčalo 
 
 Files uploaded:
 1. shell.c
